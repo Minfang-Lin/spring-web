@@ -2,12 +2,12 @@ package com.netease.course.model;
 
 public class Product {
 	private int id;
-	private long price;
+	private double price;
 	private String title;
 	private String image;
 	private String summary;
 	private String detail;
-	private int buyPrice;
+	private double buyPrice;
 	private long buyTime;
 	private boolean isBuy;
 	private boolean isSell;
@@ -17,10 +17,10 @@ public class Product {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public long getPrice() {
+	public double getPrice() {
 		return price;
 	}
-	public void setPrice(long price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 	public String getTitle() {
@@ -47,10 +47,10 @@ public class Product {
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
-	public int getBuyPrice() {
+	public double getBuyPrice() {
 		return buyPrice;
 	}
-	public void setBuyPrice(int buyPrice) {
+	public void setBuyPrice(double buyPrice) {
 		this.buyPrice = buyPrice;
 	}
 	public long getBuyTime() {

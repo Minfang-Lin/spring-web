@@ -4,7 +4,7 @@ public class Buy {
 	private int id;
 	private String title;
 	private String image;
-	private int buyPrice;
+	private double buyPrice;
 	private long buyTime;
 	public int getId() {
 		return id;
@@ -24,10 +24,10 @@ public class Buy {
 	public void setImage(String image) {
 		this.image = image;
 	}
-	public int getBuyPrice() {
+	public double getBuyPrice() {
 		return buyPrice;
 	}
-	public void setBuyPrice(int buyPrice) {
+	public void setBuyPrice(double buyPrice) {
 		this.buyPrice = buyPrice;
 	}
 	public long getBuyTime() {

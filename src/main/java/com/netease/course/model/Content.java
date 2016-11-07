@@ -3,7 +3,7 @@ package com.netease.course.model;
 
 public class Content {
 	private int id;
-	private long price;
+	private double price;
 	private String title;
 	private String image;
 	private String summary;
@@ -14,10 +14,10 @@ public class Content {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public long getPrice() {
+	public double getPrice() {
 		return price;
 	}
-	public void setPrice(long price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 	public String getTitle() {
@@ -44,4 +44,5 @@ public class Content {
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
+	
 }

@@ -115,7 +115,7 @@ public class HelloController {
 
 	@RequestMapping(value = "/publicSubmit")
 	public String showPublicResult(ModelMap map, HttpServletRequest request, @RequestParam String title,
-			@RequestParam String summary) throws SerialException, UnsupportedEncodingException, SQLException {
+			@RequestParam String summary, @RequestParam double price) throws SerialException, UnsupportedEncodingException, SQLException {
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("CurrectUser");
 		// 未登录用户跳转到登录界面，非卖家用户跳转到首页
@@ -127,7 +127,6 @@ public class HelloController {
 		map.addAttribute(user);
 		Blob image = new SerialBlob(request.getParameter("image").getBytes("UTF-8"));
 		Blob detail = new SerialBlob(request.getParameter("detail").getBytes("UTF-8"));
-		long price = Integer.parseInt(request.getParameter("price"));
 		Product product = productService.insertProduct(price, title, image, summary, detail);
 		if (product != null) {
 			map.addAttribute(product);
@@ -155,7 +154,7 @@ public class HelloController {
 
 	@RequestMapping(value = "/editSubmit")
 	public String editProductSubmit(ModelMap map, HttpServletRequest request, @RequestParam int id,
-			@RequestParam String title, @RequestParam String summary)
+			@RequestParam String title, @RequestParam String summary, @RequestParam double price)
 			throws SerialException, UnsupportedEncodingException, SQLException {
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("CurrectUser");
@@ -168,7 +167,6 @@ public class HelloController {
 		map.addAttribute(user);
 		Blob image = new SerialBlob(request.getParameter("image").getBytes("UTF-8"));
 		Blob detail = new SerialBlob(request.getParameter("detail").getBytes("UTF-8"));
-		long price = Integer.parseInt(request.getParameter("price"));
 		Product product = productService.editProductInfoById(id, price, title, image, summary, detail);
 		if (product != null) {
 			map.addAttribute(product);

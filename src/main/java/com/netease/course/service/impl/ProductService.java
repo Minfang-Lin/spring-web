@@ -20,8 +20,8 @@ public class ProductService {
 	@Resource
 	private BuyListDao buyListdao;
 
-	public Product insertProduct(long price, String title, Blob image, String summary, Blob detail) {
-		dao.insertProductInfo(price, title, image, summary, detail);
+	public Product insertProduct(double price, String title, Blob image, String summary, Blob detail) {
+		dao.insertProductInfo((int)(price*100), title, image, summary, detail);
 		int id = dao.getLastPublishId();
 		return dao.getProductInfoById(id);
 	}
@@ -31,11 +31,13 @@ public class ProductService {
 		for (Product p : productList) {
 			Trx t = dao.getTrxByContentId(p.getId());
 			if (t != null) {
-				p.setBuyPrice(t.getPrice());
+				p.setBuyPrice(t.getPrice()/100.0);
+				p.setPrice(p.getPrice()/100.0);
 				p.setIsBuy(true);
 				p.setBuyTime(t.getTime());
 				p.setIsSell(true);
 			} else {
+				p.setPrice(p.getPrice()/100.0);
 				p.setIsBuy(false);
 				p.setIsSell(false);
 			}
@@ -44,7 +46,10 @@ public class ProductService {
 	}
 
 	public Product getProductById(int id) {
-		return dao.getProductInfoById(id);
+		Product product = dao.getProductInfoById(id);
+		product.setBuyPrice(product.getBuyPrice()/100.0);
+		product.setPrice(product.getPrice()/100.0);
+		return product;
 	}
 
 	public Product getProductById(int contentId, int personId) {
@@ -54,14 +59,17 @@ public class ProductService {
 			product.setIsBuy(true);
 			product.setIsSell(true);
 			product.setBuyTime(trx.getTime());
-			product.setBuyPrice(trx.getPrice());
+			product.setBuyPrice(trx.getPrice()/100.0);
 		}
+		product.setPrice(product.getPrice()/100.0);
 		return product;
 	}
 
-	public Product editProductInfoById(int id, long price, String title, Blob image, String summary, Blob detail) {
-		dao.editProductInfo(id, price, title, image, summary, detail);
-		return dao.getProductInfoById(id);
+	public Product editProductInfoById(int id, double price, String title, Blob image, String summary, Blob detail) {
+		dao.editProductInfo(id, (long)(price*100), title, image, summary, detail);
+		Product product = dao.getProductInfoById(id);
+		product.setPrice(product.getPrice()/100.0);
+		return product;
 	}
 
 	public boolean deleteProductInfoById(int id) {
@@ -80,6 +88,7 @@ public class ProductService {
 			Product p = dao.getProductInfoById(b.getId());
 			b.setTitle(p.getTitle());
 			b.setImage(p.getImage());
+			b.setBuyPrice(b.getBuyPrice()/100.0);
 		}
 		return buyList;
 	}
