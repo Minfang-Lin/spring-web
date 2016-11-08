@@ -1,15 +1,15 @@
 1. 目录结构
 
-* com.netease.course.model
-* com.netease.course.dao
-* com.netease.course.dao.impl
-* com.netease.course.service
-* com.netease.course.service.impl
-* com.netease.course.utils
-* com.netease.course.web.controller
-* com.netease.course.web.filter
-* com.netease.course.web.listener
-* com.netease.course.UI
+- com.netease.course.model
+- com.netease.course.dao
+- com.netease.course.dao.impl
+- com.netease.course.service
+- com.netease.course.service.impl
+- com.netease.course.utils
+- com.netease.course.web.controller
+- com.netease.course.web.filter
+- com.netease.course.web.listener
+- com.netease.course.UI
 
 2. 价格处理的时候乘以100，取整数部分，显示的时候除以100
 
