@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.sql.rowset.serial.SerialBlob;
 import javax.sql.rowset.serial.SerialException;
@@ -31,8 +30,7 @@ public class HelloController {
 	private ProductService productService;
 
 	@RequestMapping(value = "/login")
-	public String login(ModelMap map, HttpServletRequest request) {
-		HttpSession session = request.getSession();
+	public String login(ModelMap map, HttpSession session) {
 		User user = (User) session.getAttribute("CurrectUser");
 		// 未登录用户显示登录页面，已登录则跳转到首页
 		if (user != null) {
@@ -43,15 +41,13 @@ public class HelloController {
 	}
 
 	@RequestMapping(value = "/logout")
-	public String logout(ModelMap map, HttpServletRequest request) {
-		HttpSession session = request.getSession();
+	public String logout(ModelMap map, HttpSession session) {
 		session.invalidate();
 		return "redirect:/login";
 	}
 
 	@RequestMapping(value = "/")
-	public String indexPage(ModelMap map, HttpServletRequest request) {
-		HttpSession session = request.getSession();
+	public String indexPage(ModelMap map, HttpSession session) {
 		User user = (User) session.getAttribute("CurrectUser");
 		List<Product> productList = productService.getAllProductList();
 		if (productList != null) {
@@ -64,16 +60,15 @@ public class HelloController {
 	}
 
 	@RequestMapping(value = "/show")
-	public String showProductInfo(ModelMap map, HttpServletRequest request) {
-		HttpSession session = request.getSession();
+	public String showProductInfo(ModelMap map, HttpSession session, @RequestParam int id) {
 		User user = (User) session.getAttribute("CurrectUser");
 		Product product;
 		// 已登录用户根据用户id获取isBuy和isSell信息
 		if (user != null) {
 			map.addAttribute(user);
-			product = productService.getProductById(Integer.parseInt(request.getParameter("id")), user.getId());
+			product = productService.getProductById(id, user.getId());
 		} else {
-			product = productService.getProductById(Integer.parseInt(request.getParameter("id")));
+			product = productService.getProductById(id);
 		}
 		if (product != null) {
 			map.addAttribute(product);
@@ -82,8 +77,7 @@ public class HelloController {
 	}
 
 	@RequestMapping(value = "/account")
-	public String showUserAccount(ModelMap map, HttpServletRequest request) {
-		HttpSession session = request.getSession();
+	public String showUserAccount(ModelMap map, HttpSession session) {
 		User user = (User) session.getAttribute("CurrectUser");
 		// 用户未登录跳转至登录页面，已登录用户非买家跳转至首页
 		if (user == null) {
@@ -100,8 +94,7 @@ public class HelloController {
 	}
 
 	@RequestMapping(value = "/public")
-	public String publicProduct(ModelMap map, HttpServletRequest request) {
-		HttpSession session = request.getSession();
+	public String publicProduct(ModelMap map, HttpSession session) {
 		User user = (User) session.getAttribute("CurrectUser");
 		// 未登录用户跳转到登录界面，非卖家用户跳转到首页
 		if (user == null) {
@@ -114,9 +107,9 @@ public class HelloController {
 	}
 
 	@RequestMapping(value = "/publicSubmit")
-	public String showPublicResult(ModelMap map, HttpServletRequest request, @RequestParam String title,
-			@RequestParam String summary, @RequestParam double price) throws SerialException, UnsupportedEncodingException, SQLException {
-		HttpSession session = request.getSession();
+	public String showPublicResult(ModelMap map, HttpSession session, @RequestParam String image,
+			@RequestParam String detail, @RequestParam String title, @RequestParam String summary,
+			@RequestParam double price) throws SerialException, UnsupportedEncodingException, SQLException {
 		User user = (User) session.getAttribute("CurrectUser");
 		// 未登录用户跳转到登录界面，非卖家用户跳转到首页
 		if (user == null) {
@@ -125,9 +118,9 @@ public class HelloController {
 			return "redirect:/";
 		}
 		map.addAttribute(user);
-		Blob image = new SerialBlob(request.getParameter("image").getBytes("UTF-8"));
-		Blob detail = new SerialBlob(request.getParameter("detail").getBytes("UTF-8"));
-		Product product = productService.insertProduct(price, title, image, summary, detail);
+		Blob imageBlob = new SerialBlob(image.getBytes("UTF-8"));
+		Blob detailBlob = new SerialBlob(detail.getBytes("UTF-8"));
+		Product product = productService.insertProduct(price, title, imageBlob, summary, detailBlob);
 		if (product != null) {
 			map.addAttribute(product);
 		}
@@ -135,8 +128,7 @@ public class HelloController {
 	}
 
 	@RequestMapping(value = "/edit")
-	public String editProduct(ModelMap map, HttpServletRequest request) {
-		HttpSession session = request.getSession();
+	public String editProduct(ModelMap map, HttpSession session, @RequestParam int id) {
 		User user = (User) session.getAttribute("CurrectUser");
 		// 未登录用户跳转到登录界面，非卖家用户跳转到首页
 		if (user == null) {
@@ -145,7 +137,7 @@ public class HelloController {
 			return "redirect:/";
 		}
 		map.addAttribute(user);
-		Product product = productService.getProductById(Integer.parseInt(request.getParameter("id")));
+		Product product = productService.getProductById(id);
 		if (product != null) {
 			map.addAttribute(product);
 		}
@@ -153,10 +145,9 @@ public class HelloController {
 	}
 
 	@RequestMapping(value = "/editSubmit")
-	public String editProductSubmit(ModelMap map, HttpServletRequest request, @RequestParam int id,
-			@RequestParam String title, @RequestParam String summary, @RequestParam double price)
-			throws SerialException, UnsupportedEncodingException, SQLException {
-		HttpSession session = request.getSession();
+	public String editProductSubmit(ModelMap map, HttpSession session, @RequestParam int id, @RequestParam String title,
+			@RequestParam String summary, @RequestParam double price, @RequestParam String image,
+			@RequestParam String detail) throws SerialException, UnsupportedEncodingException, SQLException {
 		User user = (User) session.getAttribute("CurrectUser");
 		// 未登录用户跳转到登录界面，非卖家用户跳转到首页
 		if (user == null) {
@@ -165,9 +156,9 @@ public class HelloController {
 			return "redirect:/";
 		}
 		map.addAttribute(user);
-		Blob image = new SerialBlob(request.getParameter("image").getBytes("UTF-8"));
-		Blob detail = new SerialBlob(request.getParameter("detail").getBytes("UTF-8"));
-		Product product = productService.editProductInfoById(id, price, title, image, summary, detail);
+		Blob imageBlob = new SerialBlob(image.getBytes("UTF-8"));
+		Blob detailBlob = new SerialBlob(detail.getBytes("UTF-8"));
+		Product product = productService.editProductInfoById(id, price, title, imageBlob, summary, detailBlob);
 		if (product != null) {
 			map.addAttribute(product);
 		}

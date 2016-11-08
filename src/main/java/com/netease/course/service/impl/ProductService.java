@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.netease.course.dao.impl.BuyListDao;
 import com.netease.course.dao.impl.ProductDao;
@@ -20,6 +22,7 @@ public class ProductService {
 	@Resource
 	private BuyListDao buyListdao;
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public Product insertProduct(double price, String title, Blob image, String summary, Blob detail) {
 		dao.insertProductInfo((int)(price*100), title, image, summary, detail);
 		int id = dao.getLastPublishId();
