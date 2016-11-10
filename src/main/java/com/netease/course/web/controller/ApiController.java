@@ -18,7 +18,7 @@ import com.netease.course.service.impl.UserService;
 
 @Controller
 @RequestMapping("/api")
-public class ApiController {
+public class ApiController extends BasicController {
 
 	@Resource
 	private UserService userService;
@@ -48,13 +48,6 @@ public class ApiController {
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public String deleteProductById(ModelMap map, HttpSession session, HttpServletResponse response,
 			@RequestParam int id) {
-		User user = (User) session.getAttribute("CurrectUser");
-		// 未登录用户跳转到登录界面，非卖家用户跳转到首页
-		if (user == null) {
-			return "redirect:/login";
-		} else if (user.getUsertype() != 1) {
-			return "redirect:/";
-		}
 		if (productService.deleteProductInfoById(id)) {
 			response.setStatus(200);
 			map.addAttribute("code", response.getStatus());
@@ -73,12 +66,6 @@ public class ApiController {
 	public String buyProductById(ModelMap map, HttpSession session, HttpServletResponse response,
 			@RequestParam int id) {
 		User user = (User) session.getAttribute("CurrectUser");
-		// 未登录用户跳转到登录界面，非买家用户跳转到首页
-		if (user == null) {
-			return "redirect:/login";
-		} else if (user.getUsertype() != 0) {
-			return "redirect:/";
-		}
 		int personId = user.getId();
 		long time = new Date().getTime();
 		if (productService.insertPurchase(id, personId, time)) {
