@@ -25,6 +25,8 @@ public class BasicController {
 	
 	@RequestMapping("*")
 	public String logout(ModelMap map, HttpSession session) {
+		User user = (User) session.getAttribute("CurrectUser");
+		map.addAttribute(user);
 		return "error404";
 	}
 	

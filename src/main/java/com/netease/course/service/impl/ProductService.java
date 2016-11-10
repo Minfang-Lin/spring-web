@@ -24,7 +24,7 @@ public class ProductService {
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Product insertProduct(double price, String title, Blob image, String summary, Blob detail) {
-		dao.insertProductInfo((int)(price*100), title, image, summary, detail);
+		dao.insertProductInfo((int) (price * 100), title, image, summary, detail);
 		int id = dao.getLastPublishId();
 		return dao.getProductInfoById(id);
 	}
@@ -34,13 +34,13 @@ public class ProductService {
 		for (Product p : productList) {
 			Trx t = dao.getTrxByContentId(p.getId());
 			if (t != null) {
-				p.setBuyPrice(t.getPrice()/100.0);
-				p.setPrice(p.getPrice()/100.0);
+				p.setBuyPrice(t.getPrice() / 100.0);
+				p.setPrice(p.getPrice() / 100.0);
 				p.setIsBuy(true);
 				p.setBuyTime(t.getTime());
 				p.setIsSell(true);
 			} else {
-				p.setPrice(p.getPrice()/100.0);
+				p.setPrice(p.getPrice() / 100.0);
 				p.setIsBuy(false);
 				p.setIsSell(false);
 			}
@@ -50,28 +50,35 @@ public class ProductService {
 
 	public Product getProductById(int id) {
 		Product product = dao.getProductInfoById(id);
-		product.setBuyPrice(product.getBuyPrice()/100.0);
-		product.setPrice(product.getPrice()/100.0);
+		if (product != null) {
+			product.setBuyPrice(product.getBuyPrice() / 100.0);
+			product.setPrice(product.getPrice() / 100.0);
+		}
 		return product;
 	}
 
 	public Product getProductById(int contentId, int personId) {
 		Product product = dao.getProductInfoById(contentId);
+		if (product == null) {
+			return null;
+		}
 		Trx trx = dao.getTrxByContentIdAndPeronId(contentId, personId);
 		if (trx != null) {
 			product.setIsBuy(true);
 			product.setIsSell(true);
 			product.setBuyTime(trx.getTime());
-			product.setBuyPrice(trx.getPrice()/100.0);
+			product.setBuyPrice(trx.getPrice() / 100.0);
 		}
-		product.setPrice(product.getPrice()/100.0);
+		product.setPrice(product.getPrice() / 100.0);
 		return product;
 	}
 
 	public Product editProductInfoById(int id, double price, String title, Blob image, String summary, Blob detail) {
-		dao.editProductInfo(id, (long)(price*100), title, image, summary, detail);
+		dao.editProductInfo(id, (long) (price * 100), title, image, summary, detail);
 		Product product = dao.getProductInfoById(id);
-		product.setPrice(product.getPrice()/100.0);
+		if (product != null) {
+			product.setPrice(product.getPrice() / 100.0);
+		}
 		return product;
 	}
 
@@ -81,6 +88,9 @@ public class ProductService {
 
 	public boolean insertPurchase(int contentId, int personId, long time) {
 		Product product = dao.getProductInfoById(contentId);
+		if (product == null) {
+			return false;
+		}
 		int price = (int) product.getPrice();
 		return dao.insertPurchase(contentId, personId, price, time);
 	}
@@ -91,7 +101,7 @@ public class ProductService {
 			Product p = dao.getProductInfoById(b.getId());
 			b.setTitle(p.getTitle());
 			b.setImage(p.getImage());
-			b.setBuyPrice(b.getBuyPrice()/100.0);
+			b.setBuyPrice(b.getBuyPrice() / 100.0);
 		}
 		return buyList;
 	}

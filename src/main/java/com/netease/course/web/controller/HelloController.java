@@ -59,7 +59,7 @@ public class HelloController extends BasicController {
 	}
 
 	@RequestMapping(value = "/show")
-	public String showProductInfo(ModelMap map, HttpSession session, @RequestParam int id) {
+	public String showProductInfo(ModelMap map, HttpSession session, @RequestParam Integer id) {
 		User user = (User) session.getAttribute("CurrectUser");
 		Product product;
 		// 已登录用户根据用户id获取isBuy和isSell信息
@@ -93,7 +93,7 @@ public class HelloController extends BasicController {
 	@RequestMapping(value = "/publicSubmit")
 	public String showPublicResult(ModelMap map, HttpSession session, @RequestParam String image,
 			@RequestParam String detail, @RequestParam String title, @RequestParam String summary,
-			@RequestParam double price) throws SerialException, UnsupportedEncodingException, SQLException {
+			@RequestParam Double price) throws SerialException, UnsupportedEncodingException, SQLException {
 		Blob imageBlob = new SerialBlob(image.getBytes("UTF-8"));
 		Blob detailBlob = new SerialBlob(detail.getBytes("UTF-8"));
 		Product product = productService.insertProduct(price, title, imageBlob, summary, detailBlob);
@@ -104,7 +104,7 @@ public class HelloController extends BasicController {
 	}
 
 	@RequestMapping(value = "/edit")
-	public String editProduct(ModelMap map, @RequestParam int id) {
+	public String editProduct(ModelMap map, @RequestParam Integer id) {
 		Product product = productService.getProductById(id);
 		if (product != null) {
 			map.addAttribute(product);
@@ -113,8 +113,8 @@ public class HelloController extends BasicController {
 	}
 
 	@RequestMapping(value = "/editSubmit")
-	public String editProductSubmit(ModelMap map, @RequestParam int id, @RequestParam String title,
-			@RequestParam String summary, @RequestParam double price, @RequestParam String image,
+	public String editProductSubmit(ModelMap map, @RequestParam Integer id, @RequestParam String title,
+			@RequestParam String summary, @RequestParam Double price, @RequestParam String image,
 			@RequestParam String detail) throws SerialException, UnsupportedEncodingException, SQLException {
 		Blob imageBlob = new SerialBlob(image.getBytes("UTF-8"));
 		Blob detailBlob = new SerialBlob(detail.getBytes("UTF-8"));
