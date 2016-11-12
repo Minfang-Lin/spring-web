@@ -19,19 +19,19 @@ public class BuyerInterceptor implements HandlerInterceptor {
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
-		User currentUser = (User) request.getSession().getAttribute("CurrectUser");
-		if (currentUser != null)
-			modelAndView.addObject(currentUser);
 	}
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		User currentUser = (User) request.getSession().getAttribute("CurrectUser");
+		User currentUser = (User) request.getSession().getAttribute("user");
 		if (currentUser == null) {
 			response.sendRedirect("/login");
+			return false;
 		} else if (currentUser.getUsertype() != 0) {
+			System.out.println("buyer interceptor");
 			response.sendRedirect("/");
+			return false;
 		}
 		return true;
 	}

@@ -24,6 +24,7 @@ public class ProductService {
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Product insertProduct(double price, String title, Blob image, String summary, Blob detail) {
+		price = price > 0 ? price : 0;
 		dao.insertProductInfo((int) (price * 100), title, image, summary, detail);
 		int id = dao.getLastPublishId();
 		return dao.getProductInfoById(id);
@@ -74,6 +75,7 @@ public class ProductService {
 	}
 
 	public Product editProductInfoById(int id, double price, String title, Blob image, String summary, Blob detail) {
+		price = price > 0 ? price : 0;
 		dao.editProductInfo(id, (long) (price * 100), title, image, summary, detail);
 		Product product = dao.getProductInfoById(id);
 		if (product != null) {

@@ -21,50 +21,43 @@ import com.netease.course.service.impl.ProductService;
 import com.netease.course.service.impl.UserService;
 
 @Controller
-public class HelloController extends BasicController {
+public class HelloController {
 
 	@Resource
 	private UserService userService;
 	@Resource
 	private ProductService productService;
-    
+
 	@RequestMapping(value = "/login")
-	public String login(ModelMap map, HttpSession session) {
-		User user = (User) session.getAttribute("CurrectUser");
+	public String login(HttpSession session) {
 		// 未登录用户显示登录页面，已登录则跳转到首页
-		if (user != null) {
-			map.addAttribute(user);
+		if (session.getAttribute("user") != null) {
 			return "redirect:/";
 		}
 		return "login";
 	}
 
 	@RequestMapping(value = "/logout")
-	public String logout(ModelMap map, HttpSession session) {
+	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/login";
 	}
 
 	@RequestMapping(value = "/")
-	public String indexPage(ModelMap map, HttpSession session) {
+	public String indexPage(ModelMap map) {
 		List<Product> productList = productService.getAllProductList();
 		if (productList != null) {
 			map.addAttribute(productList);
-		}
-		User user = (User) session.getAttribute("CurrectUser");
-		if (user != null) {
-			map.addAttribute(user);
 		}
 		return "index";
 	}
 
 	@RequestMapping(value = "/show")
 	public String showProductInfo(ModelMap map, HttpSession session, @RequestParam Integer id) {
-		User user = (User) session.getAttribute("CurrectUser");
+		User user = (User) session.getAttribute("user");
 		Product product;
 		// 已登录用户根据用户id获取isBuy和isSell信息
 		if (user != null) {
-			map.addAttribute(user);
 			product = productService.getProductById(id, user.getId());
 		} else {
 			product = productService.getProductById(id);
@@ -77,7 +70,7 @@ public class HelloController extends BasicController {
 
 	@RequestMapping(value = "/account")
 	public String showUserAccount(ModelMap map, HttpSession session) {
-		User user = (User) session.getAttribute("CurrectUser");
+		User user = (User) session.getAttribute("user");
 		List<Buy> buyList = productService.getBuyList(user.getId());
 		if (buyList != null) {
 			map.addAttribute(buyList);
@@ -91,9 +84,9 @@ public class HelloController extends BasicController {
 	}
 
 	@RequestMapping(value = "/publicSubmit")
-	public String showPublicResult(ModelMap map, HttpSession session, @RequestParam String image,
-			@RequestParam String detail, @RequestParam String title, @RequestParam String summary,
-			@RequestParam Double price) throws SerialException, UnsupportedEncodingException, SQLException {
+	public String showPublicResult(ModelMap map, @RequestParam String image, @RequestParam String detail,
+			@RequestParam String title, @RequestParam String summary, @RequestParam Double price)
+			throws SerialException, UnsupportedEncodingException, SQLException {
 		Blob imageBlob = new SerialBlob(image.getBytes("UTF-8"));
 		Blob detailBlob = new SerialBlob(detail.getBytes("UTF-8"));
 		Product product = productService.insertProduct(price, title, imageBlob, summary, detailBlob);

@@ -6,7 +6,7 @@
 <#include "/include/header.ftl">
 <div class="g-doc">
     <div class="n-result">
-        <h3>啊啊啊，你是怎么进来的？</h3>
+        <h3>ERROR 404: 该页面不存在</h3>
         <p><a href="/">[返回首页]</a></p>
     </div>
 </div>
