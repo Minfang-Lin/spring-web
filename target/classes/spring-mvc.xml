@@ -22,14 +22,14 @@
 	
 	<mvc:interceptors>
 	    <mvc:interceptor>  
-	        <mvc:mapping path="/account"/>  
+	        <mvc:mapping path="/account.*"/>  
 	        <bean class="com.netease.course.utils.BuyerInterceptor"/>  
 	    </mvc:interceptor>  
 	    <mvc:interceptor>
-	        <mvc:mapping path="/public"/>
-	        <mvc:mapping path="/publicSubmit"/>
-	        <mvc:mapping path="/edit"/>
-	        <mvc:mapping path="/editSubmit"/>  
+	        <mvc:mapping path="/public.*"/>
+	        <mvc:mapping path="/publicSubmit.*"/>
+	        <mvc:mapping path="/edit.*"/>
+	        <mvc:mapping path="/editSubmit.*"/>  
 	        <bean class="com.netease.course.utils.SellerInterceptor"/>  
 	    </mvc:interceptor>
 	</mvc:interceptors>
