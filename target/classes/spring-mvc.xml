@@ -9,32 +9,42 @@
 	http://www.springframework.org/schema/mvc
 	http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
+	<!-- 定义过滤器捕获400、405异常 -->
 	<context:component-scan base-package="com.netease.course.web.controller">
 		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
 	</context:component-scan>
 	
+	<!-- 过滤静态文件路径，添加favicon -->
 	<mvc:annotation-driven />
 	<mvc:resources mapping="/css/**" location="/css/" />
 	<mvc:resources mapping="/js/**" location="/js/" />
 	<mvc:resources mapping="/favicon.ico" location="/favicon.ico"/>
-	
+	<!-- 配置404页面对于ftl -->
 	<mvc:view-controller path="/404" view-name="error/404"/>
 	
+	<!-- 定义拦截器 -->
 	<mvc:interceptors>
+		<!-- 需要买家权限才能访问的路径 -->
 	    <mvc:interceptor>  
-	        <mvc:mapping path="/account.*"/>  
+	        <mvc:mapping path="/account"/>  
+	        <mvc:mapping path="/account.*"/>
 	        <bean class="com.netease.course.utils.BuyerInterceptor"/>  
 	    </mvc:interceptor>  
+	    <!-- 需要卖家权限才能访问的路径 -->
 	    <mvc:interceptor>
+	        <mvc:mapping path="/public"/>
 	        <mvc:mapping path="/public.*"/>
+	        <mvc:mapping path="/publicSubmit"/>
 	        <mvc:mapping path="/publicSubmit.*"/>
+	        <mvc:mapping path="/edit"/>
 	        <mvc:mapping path="/edit.*"/>
-	        <mvc:mapping path="/editSubmit.*"/>  
+	        <mvc:mapping path="/editSubmit"/> 
+	        <mvc:mapping path="/editSubmit.*"/>
 	        <bean class="com.netease.course.utils.SellerInterceptor"/>  
 	    </mvc:interceptor>
 	</mvc:interceptors>
 	
-	
+	<!-- 配置freemarker，并使用classic_compatible=true对旧版语法支持 -->
 	<bean id="freemarkerConfig"
 		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
 		<property name="templateLoaderPath" value="/template" />
@@ -46,6 +56,7 @@
 		</property>
 	</bean>
 
+	
 	<bean
 		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
 		<property name="viewResolvers">
