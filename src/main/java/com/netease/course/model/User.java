@@ -1,5 +1,11 @@
 package com.netease.course.model;
 
+/**
+ * @author linminfang
+ * @create_time：2016.11.05 
+ * @version V1.0.0 
+ *
+ */
 public class User {
 	private int id;
 	private String username;

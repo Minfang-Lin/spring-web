@@ -8,6 +8,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.netease.course.model.User;
 
+/**
+ * @author linminfang
+ * @create_time：2016.11.13 
+ * @version V1.0.0 
+ *
+ */
 public class SellerInterceptor implements HandlerInterceptor {
 
 	@Override

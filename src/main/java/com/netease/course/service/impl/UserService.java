@@ -7,6 +7,12 @@ import org.springframework.stereotype.Service;
 import com.netease.course.dao.impl.UserDao;
 import com.netease.course.model.User;
 
+/**
+ * @author linminfang
+ * @create_time：2016.11.05 
+ * @version V1.0.0 
+ *
+ */
 @Service
 public class UserService {
 	

@@ -20,6 +20,12 @@ import com.netease.course.model.User;
 import com.netease.course.service.impl.ProductService;
 import com.netease.course.service.impl.UserService;
 
+/**
+ * @author linminfang
+ * @create_time：2016.11.15 
+ * @version V1.0.3 
+ *
+ */
 @Controller
 public class HelloController {
 

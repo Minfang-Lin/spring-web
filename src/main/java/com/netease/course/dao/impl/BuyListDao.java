@@ -8,6 +8,12 @@ import org.apache.ibatis.annotations.Select;
 
 import com.netease.course.model.Buy;
 
+/**
+ * @author linminfang
+ * @create_time：2016.11.05 
+ * @version V1.0.0 
+ *
+ */
 public interface BuyListDao {
 	@Results({
 		@Result(property = "id", column = "contentId"),

@@ -13,6 +13,12 @@ import org.apache.ibatis.annotations.Update;
 import com.netease.course.model.Product;
 import com.netease.course.model.Trx;
 
+/**
+ * @author linminfang
+ * @create_time：2016.11.13
+ * @version V1.0.5 
+ *
+ */
 public interface ProductDao {
 //	@Options(useGeneratedKeys=true, keyProperty="0", keyColumn = "id")
 	@Insert("INSERT INTO content (price, title, icon, abstract, text) VALUES (#{0}, #{1}, #{2}, #{3}, #{4})")

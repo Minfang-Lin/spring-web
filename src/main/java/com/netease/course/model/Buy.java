@@ -1,5 +1,11 @@
 package com.netease.course.model;
 
+/**
+ * @author linminfang
+ * @create_time：2016.11.05 
+ * @version V1.0.0 
+ *
+ */
 public class Buy {
 	private int id;
 	private String title;

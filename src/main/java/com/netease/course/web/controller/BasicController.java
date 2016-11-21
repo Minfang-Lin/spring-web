@@ -8,6 +8,12 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * @author linminfang
+ * @create_time：2016.11.14 
+ * @version V1.0.0 
+ *
+ */
 @ControllerAdvice
 public class BasicController {
 

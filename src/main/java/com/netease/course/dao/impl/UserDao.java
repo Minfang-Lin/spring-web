@@ -5,6 +5,12 @@ import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Select;
 import com.netease.course.model.User;
 
+/**
+ * @author linminfang
+ * @create_time：2016.11.05 
+ * @version V1.0.0 
+ *
+ */
 public interface UserDao {
 	@Results({
 		@Result(property = "id", column = "id"),
